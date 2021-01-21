@@ -5,6 +5,8 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
 	state: {
+		token: uni.getStorageSync('token') || '', // localStorage.getItem('token') || '',
+		refreshToken: uni.getStorageSync('refreshToken') || '', // localStorage.getItem('refreshToken') || '',
 		hasLogin: false,
 		isUniverifyLogin: false,
 		loginProvider: "",
@@ -20,6 +22,16 @@ const store = new Vuex.Store({
 		univerifyErrorMsg: ''
 	},
 	mutations: {
+		SET_TOKEN(state, token) {
+		  state.token = token
+		//   localStorage.setItem('token', token)
+		uni.setStorageSync('token', token)
+		},
+		SET_REFRESHTOKEN(state, refreshToken) {
+		  state.refreshToken = refreshToken
+		//   localStorage.setItem('refreshToken', refreshToken)
+		uni.setStorageSync('refreshToken', refreshToken)
+		},
 		login(state, provider) {
 			state.hasLogin = true;
 			state.loginProvider = provider;
@@ -27,6 +39,14 @@ const store = new Vuex.Store({
 		logout(state) {
 			state.hasLogin = false
 			state.openid = null
+
+			state.token = ''
+			// window.localStorage.setItem('token', '')
+			uni.removeStorageSync('token');
+			state.refreshToken = ''
+			// window.localStorage.setItem('refreshToken', '')
+			uni.removeStorageSync('refreshToken');
+	  
 		},
 		setOpenid(state, openid) {
 			state.openid = openid
